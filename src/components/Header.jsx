@@ -11,7 +11,7 @@ import SideHook from "@/hooks/SideHook";
 export default function Header() {
 
   const { theme, themeChange } = ThemeHook();
-  const { logout, user, contentHeader } = AuthHook();
+  const { logout, user } = AuthHook();
   const { isOpen, toggleSidebar } = SideHook();
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -37,7 +37,7 @@ export default function Header() {
       <div className="flex justify-between items-center h-full max-w-[98vw] mx-auto px-4 font-semibold">
         <div className="flex gap-2 items-center">
           <div className=" hover:bg-gray-200 p-2 rounded-md hover:text-black/50" onClick={toggleSidebar}><Menu strokeWidth={1.5} /></div>
-          <p>Medical Record Audit | {contentHeader}</p>
+          <p>Medical Record Audit | 11098</p>
         </div>
         <div className="flex items-center">
           <Avatar className="hover:opacity-80 hover:cursor-pointer" image={`https://ui-avatars.com/api/?name=${user.fullname}&size=256&format=svg&background=E0E0E0`} shape="circle" onClick={ () => setOpenProfile(true)} />

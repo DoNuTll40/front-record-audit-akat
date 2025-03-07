@@ -151,7 +151,7 @@ export default function Table() {
           <Dialog
             visible={visible}
             modal
-            // onHide={() => {if (!visible) return; hdlCloseModal(); }}
+            onHide={() => {if (!visible) return; setVisible(false); }}
             className="bg-white dark:bg-gray-800 px-4 pt-4 pb-2 rounded-sm w-96 select-none mx-4 shadow-lg dark:shadow-white/15"
             header={headerContent()}
           >

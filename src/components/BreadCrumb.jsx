@@ -8,11 +8,11 @@ export default function Breadcrumb() {
   const paths = pathname.split("/").filter((path) => path); // แยก path และกรองค่าที่ว่าง
 
   return (
-    <nav className="text-sm text-gray-600 select-none sticky top-12 bg-white/50 backdrop-blur-md py-2 px-6">
+    <nav className="text-sm text-gray-600 dark:text-white select-none sticky top-12 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md py-2 px-6">
       <ol className="flex items-center space-x-2">
         {/* Home Link */}
         <li>
-          <Link href="/" className="text-gray-500 hover:underline">
+          <Link href="/" className="text-gray-500 dark:text-gray-300 hover:underline">
             หน้าแรก
           </Link>
         </li>
@@ -26,9 +26,9 @@ export default function Breadcrumb() {
             <li key={href} className="flex items-center">
               <span className="mx-1 cursor-default">/</span>
               {isLast ? (
-                <span className="text-gray-600 font-semibold cursor-default">{formatPath(path)}</span>
+                <span className="text-gray-600 dark:text-gray-100 font-semibold cursor-default">{formatPath(path)}</span>
               ) : (
-                <Link href={href} className="text-gray-500 hover:underline">
+                <Link href={href} className="text-gray-500 dark:text-gray-300 hover:underline">
                   {formatPath(path)}
                 </Link>
               )}

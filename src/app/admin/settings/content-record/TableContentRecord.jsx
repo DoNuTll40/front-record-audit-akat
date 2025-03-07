@@ -27,7 +27,6 @@ export default function TableContentRecord() {
     const [showModalDelete, setShowModalDelete] = useState(false)
     const [selectDelete, setSelectDelete] = useState(null)
     const [selectTypePatient, setSelectTypePatient] = useState(null)
-    const { contentHeader, setContentHeader } = AppHook()
 
     const typePatient = [
       { icon: "", label: "OPD" },
@@ -38,7 +37,7 @@ export default function TableContentRecord() {
     let token = sessionStorage.getItem("token")
 
     useEffect(() => {
-        setContentHeader("Content of Medical Record")
+        console.log(" true คือ กรอกข้อมูล false คือไม่ต้องกรอกข้อมูล")
         fetchApi()
     }, [])
 

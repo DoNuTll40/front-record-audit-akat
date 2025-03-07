@@ -10,7 +10,7 @@ import dayTh from "dayjs/locale/th";
 dayjs.extend(buddhistEra);
 dayjs.locale(dayTh);
 
-const buddhistLocale= {
+const buddhistLocale = {
   ...th,
   lang: {
     ...th.lang,
@@ -24,23 +24,45 @@ const buddhistLocale= {
 export default function page() {
   const [date, setDate] = useState(null);
 
-
-
   return (
     <div className="select-none">
-      <h1 className="text-pink-600 text-center my-2">
-        แบบตรวจประเมินคุณภาพการบันทึกเวชระเบียนผู้ป่วยใน Medical Record Audit Form (IPD)
+      <h1 className="text-pink-600 text-center my-2 ">
+        แบบตรวจประเมินคุณภาพการบันทึกเวชระเบียนผู้ป่วยใน Medical Record Audit
+        Form (IPD)
       </h1>
 
       <div className="my-2">
         <div className="grid grid-cols-6 gap-1.5">
-          <input className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="AN........" />
-          <input disabled className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="HN........" />
-          <input disabled className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="Hcode........" />
-          <input disabled className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="Hname........" />
-          <input disabled className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="Date admitted....." />
-          <input disabled className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none" placeholder="Date discharged....." />
-            {/* <DatePicker
+          <input
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="AN........"
+          />
+          <input
+            disabled
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="HN........"
+          />
+          <input
+            disabled
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="Hcode........"
+          />
+          <input
+            disabled
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="Hname........"
+          />
+          <input
+            disabled
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="Date admitted....."
+          />
+          <input
+            disabled
+            className="rounded-sm py-1 border border-black/20 text-sm disabled:border-none"
+            placeholder="Date discharged....."
+          />
+          {/* <DatePicker
               locale={buddhistLocale}
               onChange={(date) => {
                 setDate(date); // ตั้งค่า state เมื่อเลือกวันที่
@@ -54,18 +76,18 @@ export default function page() {
             /> */}
         </div>
 
-        <Splitter style={{ height: 200, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-          <Splitter.Panel defaultSize="40%" min="20%" max="70%">
-            {/* <Desc text="First" /> */}
-            <div>
-              123456
-            </div>
-          </Splitter.Panel>
-          <Splitter.Panel>
-            {/* <Desc text="Second" /> */}
-            <div>456789</div>
-          </Splitter.Panel>
-        </Splitter>
+        <div className="h-[20vw] my-2 px-2">
+          <Splitter>
+            <Splitter.Panel defaultSize="40%" min="20%" max="70%">
+              {/* <Desc text="First" /> */}
+              <div>left</div>
+            </Splitter.Panel>
+            <Splitter.Panel>
+              {/* <Desc text="Second" /> */}
+              <div>right</div>
+            </Splitter.Panel>
+          </Splitter>
+        </div>
       </div>
     </div>
   );
