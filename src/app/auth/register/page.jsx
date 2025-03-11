@@ -1,7 +1,7 @@
 
 "use client"
 
-import { cryptoEncode } from "@/configs/crypto";
+import { cryptoDecode, cryptoEncode } from "@/configs/crypto";
 import { IdCard } from "lucide-react";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -37,7 +37,7 @@ export default function Register() {
       return toast.warning("หมายเลขบัตรประชาชนไม่ครบ 13 หลัก")
     }
 
-    const encoded = cryptoEncode(idenId);
+    const encoded = await cryptoEncode(idenId);
 
     const data = { national_id: encoded };
 

@@ -75,3 +75,19 @@ body {
 .custom-datepicker .ant-picker {
   font-family: "Sarabun", sans-serif !important;
 }
+
+.p-dropdown {
+  @apply px-3 py-2 rounded-md border border-gray-400 dark:border-gray-600;
+}
+
+.p-dropdown-items-wrapper {
+  @apply bg-gray-50 dark:bg-gray-800 border border-gray-400 dark:border-gray-600 rounded-md mt-1 shadow-md;
+}
+
+.p-dropdown-items li {
+  @apply px-3 py-1.5 rounded-md transition-all cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700;
+}
+
+.p-dropdown-items li.p-highlight {
+  @apply bg-blue-300 border border-blue-400 dark:bg-blue-600 dark:border-blue-500 hover:bg-blue-300 dark:hover:bg-blue-600;
+}

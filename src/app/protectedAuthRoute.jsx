@@ -10,15 +10,13 @@ export default function ProtectedAuthRoute({ children }) {
   const router = useRouter();
   
   useEffect(() => {
-    if (loading) return; // ถ้ายังโหลดอยู่ ไม่ต้องเช็คต่อ
-
-    console.log(user?.status);
+    if (loading) return;
 
     if (user?.status) {
       const path = user.status.toLowerCase();
       router.push(`/${path}`);
     }
-  }, [loading, router, user]); // เพิ่ม user ลงใน dependency array
+  }, [loading, router, user]);
 
   if (loading) {
     return <LoadingPage />;

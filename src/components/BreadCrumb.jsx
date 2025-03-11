@@ -8,7 +8,7 @@ export default function Breadcrumb() {
   const paths = pathname.split("/").filter((path) => path); // แยก path และกรองค่าที่ว่าง
 
   return (
-    <nav className="text-sm text-gray-600 dark:text-white select-none sticky top-12 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md py-2 px-6">
+    <nav className="z-50 text-sm text-gray-600 dark:text-white select-none sticky top-12 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md py-2 px-6">
       <ol className="flex items-center space-x-2">
         {/* Home Link */}
         <li>

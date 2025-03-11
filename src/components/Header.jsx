@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import SideHook from "@/hooks/SideHook";
+import { Dropdown } from "primereact/dropdown";
 
 export default function Header() {
 
@@ -32,8 +33,27 @@ export default function Header() {
     setOpenProfile(false)
   }
 
+  const optionTemplate = (option) => {
+    return (
+      <div className="flex items-center gap-2">
+        {option.icon}
+        <span>{option.label}</span>
+      </div>
+    );
+  };  
+
+  const valueTemplate = (option) => {
+    if (!option) return <span>Select Theme</span>; // แสดงค่าเริ่มต้น
+    return (
+      <div className="flex items-center gap-2">
+        {option.icon}
+        <span>{option.label}</span>
+      </div>
+    );
+  };
+
   return (
-    <div className="sticky top-0 h-12 bg-white dark:bg-gray-800 transition-all duration-200 ease-in-out z-50 select-none">
+    <div className="sticky top-0 h-12 bg-white dark:bg-gray-800 transition-all duration-200 ease-in-out select-none z-50">
       <div className="flex justify-between items-center h-full max-w-[98vw] mx-auto px-4 font-semibold">
         <div className="flex gap-2 items-center">
           <div className=" hover:bg-gray-200 p-2 rounded-md hover:text-black/50" onClick={toggleSidebar}><Menu strokeWidth={1.5} /></div>
@@ -45,7 +65,7 @@ export default function Header() {
       </div>
 
       {openProfile && (
-        <div className="fixed w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-black/40 opacity-100 animate-fadeIn select-none">
+        <div className="fixed w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-black/40 opacity-100 animate-fadeIn select-none z-[100]">
           <Dialog
             visible={openProfile}
             modal
@@ -70,13 +90,15 @@ export default function Header() {
 
             <div className="flex justify-between items-center">
               <p>Theme</p>
-              <Select
-                className="w-1/3 text-sm dark:bg-gray-700"
-                light={"gray-200"}
-                dark={"gray-800"}
+              <Dropdown
                 options={options}
                 value={theme}
-                onChange={themeChange}
+                optionLabel="label"
+                placeholder="Select Theme"
+                className=" w-2/5 bg-gray-200 dark:bg-gray-600 rounded-md"
+                itemTemplate={optionTemplate}
+                valueTemplate={valueTemplate}
+                onChange={ (e) => themeChange(e.value)}
               />
             </div>
             <hr className="my-4 opacity-20" />

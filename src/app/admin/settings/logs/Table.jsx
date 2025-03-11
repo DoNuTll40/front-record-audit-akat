@@ -142,6 +142,7 @@ export default function Table() {
         responsive
         pagination
         striped
+        dense
         customStyles={tableCustomStyles}
         fixedHeader
       />

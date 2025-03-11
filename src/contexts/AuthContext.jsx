@@ -4,7 +4,6 @@ import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/configs/axios";
 import { toast } from "react-toastify";
-import AppHook from "@/hooks/AppHook";
 
 const AuthContext = createContext();
 
@@ -43,7 +42,6 @@ function AuthContextProvider({ children }) {
 
       return rs;
     } catch (err) {
-      console.log(err);
       sessionStorage.removeItem("isAuthen_Data");
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("email");
@@ -79,7 +77,6 @@ function AuthContextProvider({ children }) {
         router.push("/");
       }
     } catch (err) {
-      console.log(err)
       if(err.response.data.message.startWith === "token"){
         return logout()
       }

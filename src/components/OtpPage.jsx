@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import AppHook from "@/hooks/AppHook";
 import axios from "@/configs/axios";
@@ -8,7 +9,7 @@ import { CircleX } from "lucide-react";
 
 export default function OTPPage() {
   const { openModalOtp, toggleOtpModal } = AppHook();
-  const { setUser, user } = AuthHook(); // Remove setLoginPass
+  const { setUser, user, setInput, login } = AuthHook(); // Remove setLoginPass
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(5 * 60);
@@ -46,6 +47,10 @@ export default function OTPPage() {
       handleSubmit();
     }
   }, [otp]);
+
+  if(openModalOtp){
+    document.getElementById("otp-input-0")?.focus();
+  }
 
   // ฟังก์ชันสำหรับจัดการการกรอก OTP
   const handleChange = (e, index) => {
@@ -132,6 +137,7 @@ export default function OTPPage() {
             toggleOtpModal();
             setOtp(["", "", "", "", "", ""]);
             setTimeLeft(5 * 60);
+            setInput({ username: "", password: "" })
             router.push(`/${user?.status.toLowerCase()}`);
           }
         }
@@ -144,16 +150,20 @@ export default function OTPPage() {
   };
 
   // ฟังก์ชันส่ง OTP ใหม่
-  const handleResendOTP = () => {
+  const handleResendOTP = async () => {
     setButtonLoading(true); // เริ่มโหลด
-    
-    setTimeout(() => {
-      setOtp(["", "", "", "", "", ""]); // รีเซ็ตค่า OTP
-      setError(""); // ล้าง Error
-      setTimeLeft(5 * 60); // เริ่มนับ 5 นาทีใหม่
-      setDisabled(false); // ให้กรอก OTP ได้
-      setButtonLoading(false); // หยุดโหลดเมื่อทำเสร็จ
-    }, 1000); // จำลองดีเลย์ 1 วินาทีเพื่อให้เห็นสถานะ Loading
+
+    const rs = await login()
+            
+    if (rs.status === 200) {
+      sessionStorage.setItem("token", rs.data.token);
+      sessionStorage.setItem("email", rs.data.email);
+      setOtp(["", "", "", "", "", ""]);
+      setError("");
+      setTimeLeft(5 * 60);
+      setDisabled(false);
+      setButtonLoading(false); 
+    }
   };
 
   // แปลงเวลาเป็น mm:ss
@@ -162,6 +172,36 @@ export default function OTPPage() {
     const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
+
+  function maskEmail(data) {
+    if (openModalOtp && data) {
+      const emailParts = data.split("@");
+      if (emailParts.length !== 2) return data;
+  
+      const [localPart, domain] = emailParts;
+  
+      if (!localPart || !domain) return data;
+  
+      const maskedLocal =
+        localPart[0] +
+        "*".repeat(Math.max(1, localPart.length - 2)) +
+        localPart.slice(-1);
+  
+      const domainParts = domain.split(".");
+      if (domainParts.length < 2) return data;
+  
+      const [domainName, domainExt] = domainParts;
+  
+      const maskedDomain =
+        domainName[0] +
+        "*".repeat(Math.max(1, domainName.length - 2)) +
+        domainName.slice(-1);
+  
+      return `${maskedLocal}@${maskedDomain}.${domainExt}`;
+    }
+  
+    return "";
+  }  
 
   return (
     <div
@@ -177,7 +217,7 @@ export default function OTPPage() {
             ยืนยันหมายเลข OTP
           </h2>
           <p className="text-black text-sm">
-            ระบบได้ส่งหมายเลข OTP ไปยังบัญชีอีเมลของคุณเรียบร้อยแล้ว {email}
+            ระบบได้ส่งหมายเลข OTP ไปยังบัญชีอีเมลของคุณเรียบร้อยแล้ว <span className="mx-0.5">{openModalOtp && maskEmail(email)} </span>
             โปรดตรวจสอบอีเมลของคุณ
           </p>
         </div>
@@ -206,11 +246,12 @@ export default function OTPPage() {
                 id={`otp-input-${index}`}
                 type="tel"
                 maxLength={1}
+                autoComplete="off"
                 value={digit}
                 onChange={(e) => handleChange(e, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 onPaste={handlePaste}
-                className={`w-12 h-12 md:w-12 md:h-12 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 dark:text-black font-semibold text-lg ${
+                className={`w-12 h-12 md:w-12 md:h-12 transition-all transform text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 dark:text-black font-semibold text-lg ${
                   disabled
                     ? "bg-gray-200 cursor-not-allowed"
                     : "focus:ring-blue-600"
@@ -230,12 +271,13 @@ export default function OTPPage() {
         <div className="flex justify-center mt-5">
           <button
             onClick={handleResendOTP}
-            className="bg-blue-500 text-white px-4 py-2 w-[45%] rounded-md hover:bg-blue-600 transition disabled:bg-gray-400 disabled:hover:cursor-not-allowed"
+            className="bg-blue-500 text-white px-4 py-2 w-[45%] rounded-md hover:bg-blue-600 transition disabled:bg-gray-400 hover:cursor-pointer disabled:hover:cursor-not-allowed"
             disabled={!disabled || buttonLoading}
           >
             {buttonLoading ? (
-              <div className="w-full flex justify-center">
-                <span className="h-6 w-6 animate-spin rounded-full border-[4px] border-gray-300 border-t-blue-800 block"></span>
+              <div className="w-full flex justify-center items-center">
+                <span className="h-5 w-5 animate-spin rounded-full border-[3px] border-gray-300 border-t-blue-500 block"></span>
+                <p className="ml-1 text-sm">กำลังส่งข้อมูล...</p>
               </div>
             ) : (
               "ส่ง OTP อีกครั้ง"

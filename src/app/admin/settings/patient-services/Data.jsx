@@ -10,6 +10,7 @@ import { toast } from "react-toastify"
 import { Button } from 'primereact/button';       
 import { Dialog } from "primereact/dialog";
 import ModalDelete from "@/components/ModalDelete";
+import { convertDateTime } from "@/services/convertDate";
 
 export default function Data() {
     const [data, setData] = useState([]);
@@ -29,11 +30,6 @@ export default function Data() {
     useEffect(() => {
         fetchApi()
     }, [])
-
-    
-    const convertDate = (date) => {
-        return moment(date).locale('th').add(543, "years").format("วันที่ DD/MM/YYYY เวลา HH:mm น.")
-    }
 
     const fetchApi = async () => {
         try {
@@ -75,7 +71,7 @@ export default function Data() {
         },
         {
           name: 'วันที่สร้าง',
-          selector: row => convertDate(row.created_at),
+          selector: row => convertDateTime(row.created_at),
           sortable: true,
         },
         {
@@ -85,7 +81,7 @@ export default function Data() {
         },
         {
           name: 'อัพเดทล่าสุด',
-          selector: row => convertDate(row.updated_at),
+          selector: row => convertDateTime(row.updated_at),
           sortable: true,
         },
         {

@@ -17,12 +17,6 @@ export default function SideBar() {
   const role = window.location.pathname.split("/")[1];
 
   const adminSideBar = [
-    // {
-    //   icon: <House size={22} strokeWidth={1} />,
-    //   name: "หน้าหลัก",
-    //   path: "/admin",
-    //   title: "หน้าแรก",
-    // },
     {
       icon: <CircleUser size={22} strokeWidth={1} />,
       name: "หน้าต่างผู้ใช้งาน",
@@ -39,16 +33,6 @@ export default function SideBar() {
         { name: "รายงาน", path: "/admin/reports" },
       ],
     },
-    // {
-    //   icon: "",
-    //   name: "ผู้ใช้งาน",
-    //   path: "",
-    //   title: "จัดการผู้ใช้",
-    //   submenu: [
-    //     { name: "เพิ่มผู้ใช้", path: "/admin/users/add" },
-    //     { name: "รายชื่อผู้ใช้", path: "/admin/users/list" },
-    //   ],
-    // },
     {
       icon: <Settings size={22} strokeWidth={1} />,
       name: "การตั้งค่า",
@@ -58,6 +42,7 @@ export default function SideBar() {
         { name: "กลุ่มคนไข้", path: "/admin/settings/patient-services" },
         { name: "หัวข้อบันทึก", path: "/admin/settings/content-record" },
         { name: "ประเภท", path: "/admin/settings/type-sql" },
+        { name: "overall-finding", path: "/admin/settings/overall-finding" },
         { name: "logs", path: "/admin/settings/logs" },
       ],
     },
@@ -96,6 +81,12 @@ export default function SideBar() {
     setSubmenuOpen(submenuOpen === index ? null : index);
   };
 
+  const activeMenu = (role?.toLowerCase() === "admin" ? adminSideBar : userSideBar).reduce((prev, curr) => {
+    return pathname.startsWith(curr.path) && curr.path.length > prev.path.length ? curr : prev;
+  }, { path: "" });
+
+  const isActive = (item) => item.path === activeMenu.path;
+
   return (
     <div
       className={`${isOpen ? (isMini ? `w-14 ${onHover ? "w-64" : ""}` : "w-64") : "w-0"} bg-white dark:bg-gray-800 dark:text-white hidden md:flex justify-between flex-col border-r-2 text-sm border-black/20 fixed top-0 h-screen left-0 transition-all duration-200 ease-in-out z-[60] overflow-hidden drop-shadow-md`}
@@ -116,18 +107,11 @@ export default function SideBar() {
           <div className="my-2 flex flex-col gap-1.5 px-1 overflow-auto">
             {(role?.toLowerCase() === "admin" ? adminSideBar : userSideBar).map((item, index) => (
               <div key={index}>
-                <p
+                <p className={`flex justify-between items-center gap-2 p-2 rounded-md transition hover:cursor-pointer 
+                  ${isActive(item) && isMini && !onHover ? "bg-gradient-to-t from-[#19498A] to-[#205cb0] text-white" : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
                   onClick={() => !item.submenu ? router.push(item.path) : handleSubmenuToggle(index)}
-                  className={`flex justify-between items-center gap-2 p-2 rounded-md transition hover:cursor-pointer 
-                    ${
-                      item.path === pathname
-                        ? isMini && !onHover
-                          ? "bg-gradient-to-t from-[#19498A] to-[#205cb0] text-white"
-                          : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                        : ""
-                    }`}
-                >
-                  <div className="flex gap-1.5">
+                  >
+                  <div className="flex gap-1.5" key={index}>
                     <span>{item.icon}</span>
                     <span className={`${isMini && !onHover && "hidden"}`}>{item.name}</span>
                   </div>
@@ -146,7 +130,7 @@ export default function SideBar() {
                       <p
                         key={subIndex}
                         onClick={() => router.push(submenuItem.path)}
-                        className={`flex items-center gap-2 p-2 rounded-md transition 
+                        className={`flex items-center gap-2 p-2 rounded-md transition hover:cursor-pointer
                           ${pathname === submenuItem.path ? "bg-gradient-to-t from-[#19498A] to-[#205cb0] text-white" : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
                       >
                         <span className="flex items-center">- {submenuItem.name}</span>
